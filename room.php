@@ -3,14 +3,14 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Dashboard - Orders</title>
-    <!-- นำเข้า Google Font เพื่อให้ภาษาไทยดูโมเดิร์น อ่านง่าย -->
+    <title>Room Management</title>
+    <!-- นำเข้า Google Font เพื่อความโมเดิร์น อ่านง่าย -->
     <link rel="preconnect" href="https://googleapis.com">
     <link rel="preconnect" href="https://gstatic.com" crossorigin>
     <link href="https://googleapis.com/css2?family=Sarabun:wght@300;400;600&display=swap" rel="stylesheet">
     
     <style>
-        /* จัดการพื้นหลังไล่สีฟ้า Ocean Light แบบจอกระจก */
+        /* จัดการพื้นหลังไล่สีฟ้า Ocean Light แบบหน้าแรก */
         body {
             font-family: 'Sarabun', sans-serif;
             background: linear-gradient(135deg, #e0f2fe 0%, #bae6fd 40%, #7dd3fc 100%);
@@ -25,7 +25,7 @@
             box-sizing: border-box;
         }
 
-        /* กล่องคอนเทนเนอร์กรอบลูกแก้วครอบตัวตาราง */
+        /* กล่องคอนเทนเนอร์กรอบลูกแก้ว */
         .glass-container {
             width: 100%;
             max-width: 1200px;
@@ -88,23 +88,7 @@
             box-shadow: 0 4px 12px rgba(3, 105, 161, 0.05);
         }
 
-        /* จัดแต่งรูปภาพห้องพักให้เรียบหรู */
-        .order-img {
-            width: 140px;
-            height: 90px;
-            object-fit: cover;
-            border-radius: 8px;
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
-            border: 1px solid rgba(255, 255, 255, 0.6);
-            transition: transform 0.3s ease;
-        }
-
-        /* ซูมภาพนุ่มๆ เมื่อส่องเมาส์ */
-        .order-img:hover {
-            transform: scale(1.06);
-        }
-
-        /* ตกแต่งปุ่มลิงก์ ไปหน้า Room */
+        /* ตกแต่งปุ่มลิงก์ ย้อนกลับไปหน้า Index */
         .btn-link {
             display: inline-flex;
             align-items: center;
@@ -136,39 +120,31 @@
     
     <?php
         include "action/connect.php";
-        $sql = "SELECT * FROM orders";
+        // ดึงข้อมูลทั้งหมดจากตาราง rooms
+        $sql = "SELECT * FROM rooms";
         $result = mysqli_query($con, $sql);
     ?>
 
-    <!-- บรรจุตารางในกรอบแก้วลูกแก้วใส -->
+    <!-- บรรจุตารางห้องพักในกรอบแก้วลูกแก้วใส -->
     <div class="glass-container">
         <table class="glass-table">
             <thead>
                 <tr>
                     <th>รหัสรายการ</th>
-                    <th>ชื่อผู้เข้าพัก</th>
-                    <th>ชำระเงิน</th>
-                    <th>ประเภท</th>
-                    <th>ห้อง</th>
-                    <th>ภาพ</th>
+                    <th>สูบบุหรี่</th>
+                    <th>อ่างอาบน้ำ</th>
+                    <th>ราคา</th>
                 </tr>
             </thead>
             <tbody>
                 <?php
-                    foreach($result as $order){
+                    foreach($result as $room){
                         ?>
                         <tr>
-                            <td><?= htmlspecialchars($order["order_id"]) ?></td>
-                            <td><?= htmlspecialchars($order["name"]) ?></td>
-                            <td><?= htmlspecialchars($order["payment"]) ?></td>
-                            <td><?= htmlspecialchars($order["usage_type"]) ?></td>
-                            <td><?= htmlspecialchars($order["room_id"]) ?></td>
-                            <td>
-                                <img 
-                                    src="<?= htmlspecialchars($order["image"]) ?>"
-                                    class="order-img"
-                                >
-                            </td>
+                            <td><?= htmlspecialchars($room["room_id"]) ?></td>
+                            <td><?= htmlspecialchars($room["smoke"]) ?></td>
+                            <td><?= htmlspecialchars($room["bathtub"]) ?></td>
+                            <td><?= number_format($room["price"], 2) ?> บาท</td>
                         </tr>
                         <?php
                     }
@@ -177,9 +153,9 @@
         </table>
     </div>
 
-    <!-- จัดระเบียบปุ่มลิงก์ให้อยู่แนวเดียวกับหน้าต่างหลัก -->
+    <!-- ปุ่มลิงก์ขยับไปด้านซ้ายให้ขนานกับขอบคอนเทนเนอร์ -->
     <div style="width: 100%; max-width: 1200px; display: flex; justify-content: flex-start; padding-left: 24px;">
-        <a href="room.php" class="btn-link">🔗 ไปที่หน้า room</a>
+        <a href="index.php" class="btn-link">⬅️ กลับไปที่หน้าหลัก</a>
     </div>
 </body>
 </html>
